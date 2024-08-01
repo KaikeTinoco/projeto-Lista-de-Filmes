@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="modal.css">
+  </head>
+  <body>
+    <header>
+      <h2>
+        <i class="bi bi-film"></i>
+        My movies
+      </h2>
+      <section class="search-container">
+        <div class="input-wrapper-name">
+          <label for="movieName">Nome:</label>
+          <input type="text" name="" id="movieName">
+        </div>
+        <div class="input-wrapper-year">
+          <label for="movieYear">Ano:</label>
+          <input type="text" name="" id="movieYear">
+        </div>
+        <button id="search-button"><i class="bi bi-search"></i></button>
+      </section>
+    </header>
+    <main>
+      <h2>Comece agora sua lista de filmes</h2>
+      <section id="movie-list"></section>
+      <article id="modal-overlay">
+        <section id="modal-background"></section>
+        <section id="modal-container">
+          <h2>Titulo do filme</h2>
+          <section id="'modal-body">
+            <img src="" alt="">
+            <div id="movie-info">
+              <p id="movie-plot"></p>
+              <p id="movie-cast"></p>
+              <p id="movie-genre"></p>
+            </div>
+          </section>
+          <section id="modal-footer"></section>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>

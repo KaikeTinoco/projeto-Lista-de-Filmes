@@ -73,6 +73,7 @@ header > h2 > i {
     border: 2px solid var(--lightest-color);
     padding: 0.3rem;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 #search-button:focus, #search-button:hover {

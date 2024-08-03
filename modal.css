@@ -16,7 +16,7 @@
     height: 100dvh;
     align-items: center;
     justify-content: center;
-    color: red;
+    color: var(--lightest-color);
 }
 
 #modal-background {
@@ -31,7 +31,62 @@
 
 #modal-container {
     z-index: 1;
-    background-color: var(--lightest-color);
+    background-color: var(--light-secondary);
     padding: 1rem 3rem;
     border-radius: 10px;
+    
 }
+
+.overlay {
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s ease;
+}
+.open {
+    visibility: visible;
+    opacity: 1;
+}
+
+#modal-body {
+    display: flex;
+    justify-content: center;
+}
+
+#movie-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    max-width: 300px;
+    padding-left: 5px;
+}
+
+#movie-title {
+    display: flex;
+    padding: 1rem 0;
+    align-items: center;
+    justify-content: center;
+}
+
+#movie-poster {
+    border-radius: 5px;
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+}
+
+#put-to-list-button {
+    cursor: pointer;
+    border: 3px solid var(--secondary-color);
+    padding: 0.3rem 0;
+    width: 100%;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+#put-to-list-button:focus, #put-to-list-button:hover {
+    background-color: var(--light-primary);
+}
+
+ 

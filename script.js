@@ -6,20 +6,13 @@ const anoFilme = document.getElementById("movieYear");
 const movieList = document.getElementById("movie-list");
 
 searchButton.addEventListener("click", () =>
-    movieQuery(tituloFilme.value, anoFilme.value)
+  movieQuery(tituloFilme.value, anoFilme.value)
 );
 
-async function movieQuery(title, year = null) {
-    createModal();
+let movieArray = [];
 
-    const moviePoster = document.getElementById("movie-poster");
-    const moviePlot = document.getElementById("movie-plot-text");
-    const movieGenre = document.getElementById("movie-genre-text");
-    const movieCast = document.getElementById("movie-cast-text");
-    const movieTitleModal = document.getElementById("movie-title");
-    const addToListButton = document.getElementById("put-to-list-button");
-    
-    try {
+async function movieQuery(title, year = null) {
+  try {
     if (title === "" || title === null) {
       throw new Error("o nome do filme não pode ser vazio");
     }
@@ -31,7 +24,6 @@ async function movieQuery(title, year = null) {
       if (Number(year) && year.length === 4) {
         url += `&y=${year}`;
       } else {
-        /* notie.alert({type : "error", text : "ano do filme inválido"}) */
         throw new Error("ano do filme inválido");
       }
     }
@@ -43,38 +35,50 @@ async function movieQuery(title, year = null) {
 
     let jsonResult = await response.json();
 
-    if (jsonResult.Title) {
-      movieTitleModal.innerText = `"${jsonResult.Title}" - ${jsonResult.Year}`;
-      moviePoster.src = jsonResult.Poster;
-      moviePlot.innerText = jsonResult.Plot;
-      movieGenre.innerText = jsonResult.Genre;
-      movieCast.innerText = jsonResult.Actors;
+    if (jsonResult.Title && !isMovieInList(jsonResult, movieArray)) {
+      createModal(jsonResult);
       overlay.classList.add("open");
       background.addEventListener("click", backgroundClickHandler);
+      addToListButton = document.getElementById("put-to-list-button");
       addToListButton.addEventListener("click", () => {
-            overlay.classList.remove("open");
-            modalOnList = placeModalonList();
-            let posterImg = document.getElementById("movie-poster-list");
-            let removeModalButton = document.getElementById("remove-button");
-            posterImg.src = jsonResult.Poster
-            removeModalButton.addEventListener("click", () => {
-                let wholeModal = posterImg.parentElement;
-                removeModalFromList(wholeModal);
-            });
-            
+        modalContainerElement.innerHTML = "";
+        overlay.classList.remove("open");
       });
-    } else {
+    } else if (!jsonResult.Title) {
       throw new Error("filme não encontrado");
+    } else {
+      throw new Error("filme ja adicionado na lista!");
     }
   } catch (error) {
     notie.alert({ type: "error", text: error.message });
   }
 }
 
-function removeModalFromList(modal) {
-    movieList.removeChild(modal);
+function removeModalFromList(id) {
+  movieArray = movieArray.filter((movie) => movie.imdbID !== id);
+  console.log(id, document.getElementById(id))
+  document.getElementById(id).remove();
 }
 
 function backgroundClickHandler() {
   overlay.classList.remove("open");
+}
+
+function placeModalonList(json) {
+  movieList.innerHTML += `
+        <article id="${json.imdbID}">
+          <img src="${json.Poster}" alt="poster do filme" id="movie-poster-list">
+          <button class="remove-button" id="remove-button" onclick="removeModalFromList('${json.imdbID}')">Remover<i class="bi bi-trash"></i></button>
+          </article>
+          `;
+}
+
+function isMovieInList(json, movies) {
+  let jsonId = json.imdbID;
+  for (let i = 0; i < movies.length; i++) {
+    if (movies[i].imdbID === jsonId) {
+      return true;
+    }
+  }
+  return false;
 }

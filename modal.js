@@ -1,51 +1,40 @@
-const overlay = document.getElementById("modal-overlay");
-const background = document.getElementById("modal-background");
-const tituloFilme = document.getElementById("movieName");
-const anoFilme = document.getElementById("movieYear");
-const searchButton = document.getElementById("search-button");
-const moviePoster = document.getElementById("movie-poster");
-const moviePlot = document.getElementById("movie-plot-text");
-const movieGenre = document.getElementById("movie-genre-text");
-const movieCast = document.getElementById("movie-cast-text");
-const movieTitleModal = document.getElementById("movie-title");
+const modalContainerElement = document.getElementById("modal-container");
 
-
-function backgroundClickHandler() {
-  overlay.classList.remove("open");
+function createModal() {
+  modalContainerElement.innerHTML = `
+    <h2 id="movie-title"></h2>
+          <section id="modal-body">
+            <img
+            id="movie-poster" 
+            src="" 
+            alt="Poster do filme"
+            />
+            <div id="movie-info">
+              <h3 id="movie-plot">
+                <p id="movie-plot-text"></p>
+              </h3>
+              <div id="movie-cast">
+                <h4>Elenco:</h4>
+                <h5 id="movie-cast-text"></h5>
+              </div>
+              <div id="movie-genre">
+                <h4>Gênero:</h4>
+                <h5 id="movie-genre-text"></h5>
+              </div>
+            </div>
+          </section>
+          <section id="modal-footer">
+            <button id="put-to-list-button">Adicionar à Lista</button>
+          </section>
+  `;
 }
-background.addEventListener("click", backgroundClickHandler);
 
-searchButton.addEventListener("click", () =>
-  movieQuery(tituloFilme.value, anoFilme.value)
-);
-
-async function movieQuery(title, year = null) {
-  try {
-    if (title === "" || title === null) {
-      console.log("O título está vazio!");
-      return null;
-    }
-
-    let movieTitle = title.replace(/ /g, "+");
-    let url = `http://www.omdbapi.com/?apikey=7da988f9&t=${movieTitle}`;
-    if (year) {
-      url += `&y=${year}`;
-    }
-
-    let response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    let jsonResult = await response.json();
-    movieTitleModal.innerText = `"${jsonResult.Title}" - ${jsonResult.Year}`;
-    moviePoster.src = jsonResult.Poster;
-    moviePlot.innerText = jsonResult.Plot;
-    movieGenre.innerText = jsonResult.Genre;
-    movieCast.innerText = jsonResult.Actors;
-    overlay.classList.add("open");
-  } catch (error) {
-    console.error("Error fetching movie data:", error);
-    return null;
-  }
+function placeModalonList() {
+  movieList.innerHTML += `
+        <article>
+          <img src="" alt="poster do filme" id="movie-poster-list">
+          <button class="remove-button" id="remove-button">Remover<i class="bi bi-trash"></i></button>
+        </article>
+  
+  `;
 }

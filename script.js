@@ -52,6 +52,7 @@ async function movieQuery(title, year = null) {
       overlay.classList.add("open");
       background.addEventListener("click", backgroundClickHandler);
       addToListButton.addEventListener("click", () => {
+            overlay.classList.remove("open");
             modalOnList = placeModalonList();
             let posterImg = document.getElementById("movie-poster-list");
             let removeModalButton = document.getElementById("remove-button");

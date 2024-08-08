@@ -1,3 +1,5 @@
+
+
 const overlay = document.getElementById("modal-overlay");
 const searchButton = document.getElementById("search-button");
 const background = document.getElementById("modal-background");
@@ -9,7 +11,11 @@ searchButton.addEventListener("click", () =>
   movieQuery(tituloFilme.value, anoFilme.value)
 );
 
-let movieArray = [];
+let movieArray = JSON.parse(localStorage.getItem("movieArray")) ?? []
+
+for (const movieInfo of movieArray) {
+  placeModalonList(movieInfo);
+}
 
 async function movieQuery(title, year = null) {
   try {
@@ -55,9 +61,18 @@ async function movieQuery(title, year = null) {
 }
 
 function removeModalFromList(id) {
-  movieArray = movieArray.filter((movie) => movie.imdbID !== id);
-  console.log(id, document.getElementById(id))
-  document.getElementById(id).remove();
+  notie.confirm({
+    text: "Deseja remover o filme da lista?",
+    submitText: "sim",
+    cancelText: "não",
+    position: "top",
+    submitCallback: function removeMovie() {
+      movieArray = movieArray.filter((movie) => movie.imdbID !== id);
+      updateLocalStorage();
+      document.getElementById(id).remove();
+    },
+  })
+  
 }
 
 function backgroundClickHandler() {
@@ -81,4 +96,8 @@ function isMovieInList(json, movies) {
     }
   }
   return false;
+}
+
+function updateLocalStorage(){
+  localStorage.setItem("movieArray", JSON.stringify(movieArray));
 }

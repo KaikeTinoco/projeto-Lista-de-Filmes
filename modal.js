@@ -36,5 +36,6 @@ function createModal(json) {
 function addCurrentMovieToList() {
 movieArray.push(currentMovie);
 placeModalonList(currentMovie)
+updateLocalStorage();
 }
 
